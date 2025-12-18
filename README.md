@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Layr JS
 
-## Getting Started
+An AI-powered text overlay generator that intelligently places text on images using [OpenRouter](https://openrouter.ai) API and vision models.
 
-First, run the development server:
+## Features
 
+- 🎨 **AI-Powered Text Placement**: Uses the Nemotron model to analyze images and find optimal text placement
+- 📝 **Multiple Text Styles**: Bold, Modern, Sci-Fi, Horror, Handwritten, Retro, and Elegant
+- 🎯 **Smart Fallback**: Graceful fallback to rule-based placement if AI analysis fails
+- 📊 **Canvas Rendering**: High-quality text rendering with stroke outlines
+- ⚡ **Built with Next.js**: Modern full-stack framework with API routes
+
+## Prerequisites
+
+- Node.js 18+
+- OpenRouter API key (get one at [openrouter.ai](https://openrouter.ai))
+
+## Setup
+
+1. **Clone the repository**
+   ```bash
+   git clone <repo-url>
+   cd layr-js
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Set environment variable** (on Windows PowerShell)
+   ```powershell
+   $env:OPENROUTER_API_KEY='your-api-key-here'
+   ```
+
+4. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## API Usage
+
+### POST `/api/generate`
+
+Sends an image with text to be overlaid and returns a processed image with AI-optimized text placement.
+
+**Parameters:**
+- `image` (FormData File): The image file to process
+- `text` (string): The text to overlay on the image
+- `style` (string): Text style - `bold`, `modern`, `handwritten`, `scifi`, `horror`, `retro`, `elegant`
+
+**Example:**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+curl -X POST http://localhost:3000/api/generate \
+  -F "image=@myimage.jpg" \
+  -F "text=Hello World" \
+  -F "style=modern"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Supported Models
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Nemotron Nano 12B V2**: Free vision model via OpenRouter (`nvidia/nemotron-nano-12b-v2-vl:free`)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Scripts
 
-## Learn More
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
 
-To learn more about Next.js, take a look at the following resources:
+## Architecture
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend**: React + Next.js
+- **Backend**: Next.js API routes
+- **Image Processing**: Sharp (format conversion) + Canvas (text rendering)
+- **AI Analysis**: OpenRouter API with Nemotron vision model
+- **Styling**: Tailwind CSS
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Testing
 
-## Deploy on Vercel
+Run the test script to verify OpenRouter API connectivity:
+```bash
+node test-openrouter.js
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Troubleshooting
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **"OPENROUTER_API_KEY not set"**: Make sure to set the environment variable before running the app
+- **"AI analysis failed"**: Check your API key validity and OpenRouter service status
+- **Fallback mode**: If AI analysis fails, the app will use rule-based text placement
+
+## License
+
+MIT
